@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ ! -d "$HOME/.sdkman" ]; then
   curl -s "https://get.sdkman.io" | bash
 fi
 
+# shellcheck disable=SC1091
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-sdk install java 21-tem || true
-sdk install java 17-tem || true
+# shellcheck source=lib/versions.sh
+source "$SCRIPT_DIR/lib/versions.sh"
 
-sdk default java 21-tem
+JAVA_VER="$(latest_java_tem_lts)"
+sdk install java "$JAVA_VER"
+sdk default java "$JAVA_VER"
 
-echo "Java installed via SDKMAN"
+echo "Java $JAVA_VER installed via SDKMAN"

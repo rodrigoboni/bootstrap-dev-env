@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 sudo apt install -y \
   make build-essential libssl-dev zlib1g-dev \
@@ -17,9 +19,11 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
-pyenv install -s 3.13.2
-pyenv install -s 3.12.7
+# shellcheck source=lib/versions.sh
+source "$SCRIPT_DIR/lib/versions.sh"
 
-pyenv global 3.13.2
+PY_VER="$(latest_python_stable)"
+pyenv install -s "$PY_VER"
+pyenv global "$PY_VER"
 
-echo "Python installed via pyenv"
+echo "Python $PY_VER installed via pyenv"
