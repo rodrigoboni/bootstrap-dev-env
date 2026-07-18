@@ -27,6 +27,9 @@ sudo apt install -y \
   curl git unzip build-essential ca-certificates gnupg
 
 # Run modules
+echo "🐚 Configuring zsh..."
+bash "$BASE_DIR/zsh.sh"
+
 echo "🐳 Installing Docker..."
 bash "$BASE_DIR/docker.sh"
 
